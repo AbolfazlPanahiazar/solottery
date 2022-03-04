@@ -56,4 +56,16 @@ describe("Lottoty", () => {
     assert.equal(accounts[1], players[1]);
     assert.equal(2, players.length);
   });
+
+  it("requires min amount of ether to sign up", async () => {
+    try {
+      await lottory.methods.enter().send({
+        from: accounts[1],
+        value: web3.utils.toWei("0.005", "ether"),
+      });
+      assert(false);
+    } catch (err) {
+      assert(err);
+    }
+  });
 });
