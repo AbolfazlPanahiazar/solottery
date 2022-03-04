@@ -22,4 +22,9 @@ contract Lottery {
                 )
             );
     }
+
+    function pickWiner() public {
+        uint256 index = random() % players.length;
+        payable(players[index]).transfer(address(this).balance);
+    }
 }
