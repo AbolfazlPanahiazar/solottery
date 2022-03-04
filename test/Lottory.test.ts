@@ -30,10 +30,30 @@ describe("Lottoty", () => {
       value: web3.utils.toWei("0.011", "ether"),
     });
 
-    const players = await lottory.methods.getPlayers().call({
+    const players: string[] = await lottory.methods.getPlayers().call({
       from: accounts[0],
     });
 
     assert.equal(accounts[0], players[0]);
+  });
+
+  it("allows to multiple sign up", async () => {
+    await lottory.methods.enter().send({
+      from: accounts[0],
+      value: web3.utils.toWei("0.011", "ether"),
+    });
+
+    await lottory.methods.enter().send({
+      from: accounts[1],
+      value: web3.utils.toWei("0.012", "ether"),
+    });
+
+    const players: string[] = await lottory.methods.getPlayers().call({
+      from: accounts[0],
+    });
+
+    assert.equal(accounts[0], players[0]);
+    assert.equal(accounts[1], players[1]);
+    assert.equal(2, players.length);
   });
 });
