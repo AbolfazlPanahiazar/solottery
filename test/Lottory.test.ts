@@ -8,7 +8,7 @@ const ganache = require("ganache");
 const web3 = new Web3("ws://localhost:8545");
 
 let lottory: Contract;
-let accounts;
+let accounts: string[];
 beforeEach(async () => {
   accounts = await web3.eth.getAccounts();
 
@@ -22,5 +22,18 @@ beforeEach(async () => {
 describe("Lottoty", () => {
   it("deploys a contract", () => {
     assert.ok(lottory.options.address);
+  });
+
+  it("allows to sign up", async () => {
+    await lottory.methods.enter().send({
+      from: accounts[0],
+      value: web3.utils.toWei("0.011", "ether"),
+    });
+
+    const players = await lottory.methods.getPlayers().call({
+      from: accounts[0],
+    });
+
+    assert.equal(accounts[0], players[0]);
   });
 });
