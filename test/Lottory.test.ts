@@ -3,7 +3,6 @@ import Web3 from "web3";
 import { beforeEach, describe, it } from "mocha";
 import { abi, evm } from "../compile";
 import { Contract } from "web3-eth-contract";
-const ganache = require("ganache");
 
 const web3 = new Web3("ws://localhost:8545");
 
@@ -62,6 +61,17 @@ describe("Lottoty", () => {
       await lottory.methods.enter().send({
         from: accounts[1],
         value: web3.utils.toWei("0.005", "ether"),
+      });
+      assert(false);
+    } catch (err) {
+      assert(err);
+    }
+  });
+
+  it("only owner can pick winer", async () => {
+    try {
+      await lottory.methods.pickWinner().send({
+        from: accounts[1],
       });
       assert(false);
     } catch (err) {
