@@ -23,7 +23,7 @@ contract Lottery {
             );
     }
 
-    function pickWiner() public restricted {
+    function pickWinner() public restricted {
         uint256 index = random() % players.length;
         payable(players[index]).transfer(address(this).balance);
         players = new address[](0);
